@@ -1,0 +1,56 @@
+{% extends "bootstrap/base.html" %}
+
+{% import 'macros/view.html' as view %}
+
+{% block title %}{% block title_prefix %}{% endblock %} - TACTourney{% endblock %}
+
+{%- block styles %}
+    <!-- Bootstrap -->
+    <link href="{{bootstrap_find_resource('css/bootstrap.css', cdn='bootstrap')}}" rel="stylesheet" media="screen">
+    <link href="{{bootstrap_find_resource('css/bootstrap-theme.css', cdn='bootstrap-theme')}}" rel="stylesheet" media="screen">
+{%- endblock styles %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+{% endblock %}
+
+{% block navbar %}
+<div class="navbar navbar-default navbar-static-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="{{ url_for('index') }}">TACTourney</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            {% if current_user.is_authenticated() %}
+                <ul class="nav navbar-nav navbar-left">
+                    {{ view.navbar_item('Tournaments', 'tournaments.table') }}
+                    {{ view.navbar_item('Teams', 'teams.table') }}
+                </ul>
+            {% endif %}
+            <ul class="nav navbar-nav navbar-right">
+                {% if current_user.is_authenticated() %}
+                    <li><a href="{{ url_for('users.edit_user', user_id=current_user.id) }}">Account</a></li>
+                    <li><a href="{{ url_for('users.logout') }}">Log Out</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('users.login') }}">Log In</a></li>
+                    <li><a href="{{ url_for('users.register') }}">Register</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    {% for category, message in get_flashed_messages(with_categories=true) %}
+    <div class="alert alert-{{ category }}">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ message }}
+    </div>
+    {% endfor %}
+
+    {% block page_content %}{% endblock %}
+</div>
+{% endblock %}

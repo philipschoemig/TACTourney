@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% import 'macros/view.html' as view %}
+
+{% block title_prefix %}{{ type }}{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>{{ type }}</h1>
+</div>
+
+<div class="col-md-8">
+    {{ view.table(columns, table) }}
+</div>
+
+{% if actions %}
+    <div class="col-md-4">
+        <strong>Actions</strong>
+        {{ view.sidebar(actions) }}
+    </div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,44 @@
+{% macro navbar_item(text, endpoint) -%}
+    <li {% if request.endpoint == endpoint %}class="active"{% endif %}>
+        <a href="{{ url_for(endpoint) }}">{{ text }}</a>
+    </li>
+{%- endmacro %}
+
+{% macro sidebar(actions) -%}
+    <ul>
+        {% for key, value in actions|dictsort %}
+            <li><a href="{{ value }}">{{ key }}</a></li>
+        {% endfor %}
+    </ul>
+{%- endmacro %}
+
+{% macro table(columns, table) -%}
+    {% if columns and table %}
+        <table class="table">
+            <thead>
+                <tr>
+                    {% for column in columns %}
+                        <th>{{ column[1] }}</th>
+                    {% endfor %}
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in table %}
+                    <tr>
+                        {% for column in columns %}
+                            <td>{{ row[column[0]] }}</td>
+                        {% endfor %}
+                        <td>
+                        {% for key, value in row['actions']|dictsort %}
+                            <a class="btn btn-xs btn-default" href="{{ value }}">{{ key }}</a>
+                        {% endfor %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <em>No entries found</em>
+    {% endif %}
+{%- endmacro %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title_prefix %}Delete {{ type }}: {{ name }}{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>Delete {{ type }}: {{ name }}</h1>
+</div>
+
+<div class="col-md-8">
+    Do you really want to delete this {{ type.lower() }}?
+    {{ wtf.quick_form(form) }}
+</div>
+{% endblock %}
