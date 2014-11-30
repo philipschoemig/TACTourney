@@ -16,9 +16,9 @@ class User(db.Model, flask_login.UserMixin, utils.models.CRUDMixin):
     '''
     classdocs
     '''
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, info={'label': 'ID'})
     username = db.Column(db.String(64), unique=True, info={'label': 'Username'})
-    email = db.Column(db.String(256), unique=False, info={'label': 'E-Mail'})
+    email = db.Column(db.String(256), unique=False, info={'label': 'Email address'})
     full_name = db.Column(db.String(256), unique=False, info={'label': 'Full name'})
     password_hash = db.Column(db.String(128), unique=False)
     role_enum = db.Column(db.SmallInteger, default=users.constants.Roles.player.index, info={'label': 'Role'})
@@ -35,6 +35,9 @@ class User(db.Model, flask_login.UserMixin, utils.models.CRUDMixin):
     def password(self, password):
         self.password_hash = werkzeug.security.generate_password_hash(password)
     
+    def verify_password(self, password):
+        return werkzeug.security.check_password_hash(self.password_hash, password)
+    
     @property
     def role(self):
         return users.constants.Roles[self.role_enum]
@@ -43,8 +46,16 @@ class User(db.Model, flask_login.UserMixin, utils.models.CRUDMixin):
     def role(self, role):
         self.role_enum = role.index
     
-    def verify_password(self, password):
-        return werkzeug.security.check_password_hash(self.password_hash, password)
+    def is_admin(self):
+        return self.role == users.constants.Roles.admin
+    
+    def is_manager(self):
+        return self.role == users.constants.Roles.manager
+    
+    def has_access(self, user):
+        if user != self and user.role != users.constants.Roles.admin:
+            return False
+        return True
     
     def __repr__(self):
         return '<User %r>' % self.username

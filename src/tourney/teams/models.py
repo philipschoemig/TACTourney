@@ -12,7 +12,7 @@ class Team(db.Model, utils.models.UserAccessMixin, utils.models.CRUDMixin):
     '''
     classdocs
     '''
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, info={'label': 'ID'})
     name = db.Column(db.String(128), unique=False, info={'label': 'Name'})
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), info={'label': 'Owner', 'attr': 'user.username'})

@@ -26,7 +26,7 @@ app.config.from_object('config')
 
 app.register_blueprint(teams.views.bp_teams, url_prefix='/teams')
 app.register_blueprint(tournaments.views.bp_tournaments, url_prefix='/tournaments')
-app.register_blueprint(users.views.bp_users)
+app.register_blueprint(users.views.bp_users, url_prefix='/users')
 
 bootstrap = flask_bootstrap.Bootstrap(app)
 app.extensions['bootstrap']['cdns']['bootstrap-theme'] = flask_bootstrap.StaticCDN()

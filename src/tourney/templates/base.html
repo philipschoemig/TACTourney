@@ -26,11 +26,14 @@
                 <ul class="nav navbar-nav navbar-left">
                     {{ view.navbar_item('Tournaments', 'tournaments.table') }}
                     {{ view.navbar_item('Teams', 'teams.table') }}
+                    {% if current_user.is_admin() %}
+                        {{ view.navbar_item('Users', 'users.table') }}
+                    {% endif %}
                 </ul>
             {% endif %}
             <ul class="nav navbar-nav navbar-right">
                 {% if current_user.is_authenticated() %}
-                    <li><a href="{{ url_for('users.edit_user', user_id=current_user.id) }}">Account</a></li>
+                    <li><a href="{{ url_for('users.edit', user_id=current_user.id) }}">Account</a></li>
                     <li><a href="{{ url_for('users.logout') }}">Log Out</a></li>
                 {% else %}
                     <li><a href="{{ url_for('users.login') }}">Log In</a></li>
