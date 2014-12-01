@@ -6,11 +6,11 @@ Created on 02.10.2014
 
 import os.path
 
-_cwd = os.path.dirname(os.path.abspath(__file__))
+BASEDIR = os.path.dirname(os.path.abspath(__file__))
 
 DEBUG = True
 SECRET_KEY = 'flask-session-insecure-secret-key' # TODO
-DATABASE_FILE = os.path.join(_cwd, 'tourney.db')
+DATABASE_FILE = os.path.join(BASEDIR, 'tourney.db')
 
 BOOTSTRAP_USE_MINIFIED = True
 BOOTSTRAP_SERVE_LOCAL = True

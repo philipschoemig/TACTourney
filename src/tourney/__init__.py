@@ -9,8 +9,6 @@ Source: https://realpython.com/blog/python/python-web-applications-with-flask-pa
 import flask
 import flask_bootstrap
 import flask_login
-import flask_migrate
-import flask_script
 
 import config
 import data
@@ -36,10 +34,6 @@ login_manager.session_protection = 'strong'
 login_manager.login_view = 'users.login'
 
 data.db.init_app(app)
-migrate = flask_migrate.Migrate(app, data.db)
-
-manager = flask_script.Manager(app)
-manager.add_command('db', flask_migrate.MigrateCommand)
 
 
 @login_manager.user_loader
