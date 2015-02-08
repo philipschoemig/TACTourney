@@ -50,13 +50,11 @@ class CRUDMixin(object):
 
 class UserAccessMixin(object):
     def has_access(self, user):
-        if user != self.user and user.role != users.constants.Roles.admin:
-            return False
-        return True
+        return self.user.has_access(user)
 
     @classmethod
     def filter_user(cls, user):
         query = cls.query
-        if user.role != users.constants.Roles.admin:
+        if not user.is_admin():
             query = query.filter_by(user=user)
         return query

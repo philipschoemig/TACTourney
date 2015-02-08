@@ -21,7 +21,9 @@ class User(db.Model, flask_login.UserMixin, utils.models.CRUDMixin):
     email = db.Column(db.String(256), unique=False, info={'label': 'Email address'})
     full_name = db.Column(db.String(256), unique=False, info={'label': 'Full name'})
     password_hash = db.Column(db.String(128), unique=False)
-    role_enum = db.Column(db.SmallInteger, default=users.constants.Roles.player.index, info={'label': 'Role'})
+    role = db.Column(db.SmallInteger,
+                     default=users.constants.Roles.player.index,
+                     info={'label': 'Role', 'attr': 'role_string'})
     
     tournaments = db.relationship('tournaments.models.Tournament', backref='user', lazy='dynamic')
     teams = db.relationship('teams.models.Team', backref='user', lazy='dynamic')
@@ -33,27 +35,32 @@ class User(db.Model, flask_login.UserMixin, utils.models.CRUDMixin):
     
     @password.setter
     def password(self, password):
-        self.password_hash = werkzeug.security.generate_password_hash(password)
+        if len(password) > 0:
+            self.password_hash = werkzeug.security.generate_password_hash(password)
     
     def verify_password(self, password):
         return werkzeug.security.check_password_hash(self.password_hash, password)
     
     @property
-    def role(self):
-        return users.constants.Roles[self.role_enum]
+    def role_enum(self):
+        return users.constants.Roles[self.role]
     
-    @role.setter
-    def role(self, role):
-        self.role_enum = role.index
+    @role_enum.setter
+    def role_enum(self, role):
+        self.role = role.index
+    
+    @property
+    def role_string(self):
+        return str(self.role_enum).capitalize()
     
     def is_admin(self):
-        return self.role == users.constants.Roles.admin
+        return self.role_enum == users.constants.Roles.admin
     
     def is_manager(self):
-        return self.role == users.constants.Roles.manager
+        return self.role_enum == users.constants.Roles.manager
     
     def has_access(self, user):
-        if user != self and user.role != users.constants.Roles.admin:
+        if user != self and not user.is_admin():
             return False
         return True
     

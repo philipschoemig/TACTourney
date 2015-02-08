@@ -69,9 +69,14 @@ def edit(user_id):
         return error_access_denied('User ID {}'.format(user_id), 'index')
     
     form = users.forms.UserForm(flask.request.form, user)
+    if flask_login.current_user.is_admin():
+        form.role.choices = [(role.index, str(role).capitalize()) for role in users.constants.Roles]
+    else:
+        form.role.choices = [(flask_login.current_user.role, flask_login.current_user.role_string)]
+    
     if form.validate_on_submit():
         user.update(form=form)
-        alert_success('Your account has been saved')
+        alert_success('The user has been saved')
     
     actions = create_action_urls({'Delete': '.delete'}, user, user_id='id')
     return flask.render_template('edit_page.html', type="User", name=user.username, form=form, actions=actions)

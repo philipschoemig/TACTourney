@@ -72,4 +72,4 @@ def setup():
     if user is None:
         users.models.User.create(username=config.ADMIN_USERNAME,
                                  password=config.ADMIN_PASSWORD,
-                                 role=users.constants.Roles.admin)
+                                 role_enum=users.constants.Roles.admin)

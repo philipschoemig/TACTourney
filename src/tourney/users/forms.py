@@ -17,6 +17,7 @@ class UserForm(flask_wtf.Form):
     password = wtforms.PasswordField('Password', validators=[EqualTo('password2',
                                                                      message='Passwords must match.')])
     password2 = wtforms.PasswordField('Confirm Password')
+    role = wtforms.SelectField('Role', coerce=int)
     submit = wtforms.SubmitField('Save')
 
 
@@ -26,6 +27,7 @@ class RegisterForm(UserForm):
                                                              EqualTo('password2',
                                                                      message='Passwords must match.')])
     password2 = wtforms.PasswordField('Confirm Password', validators=[InputRequired()])
+    role = None
     recaptcha = flask_wtf.RecaptchaField()
     submit = wtforms.SubmitField('Register')
 
