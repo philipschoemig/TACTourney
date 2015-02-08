@@ -6,8 +6,12 @@ Source: https://realpython.com/blog/python/python-web-applications-with-flask-pa
 @author: Philip
 '''
 
+import logging
+import logging.handlers
+
 import flask
 import flask_bootstrap
+#import flask_ini
 import flask_login
 
 import config
@@ -21,6 +25,9 @@ import users.views
 
 app = flask.Flask(__name__)
 app.config.from_object('config')
+#app.iniconfig = flask_ini.FlaskIni()
+#app.iniconfig.readfp(open(config.DEFAULTS_CONFIG_FILE))
+#app.iniconfig.read(config.CONFIG_FILE)
 
 app.register_blueprint(teams.views.bp_teams, url_prefix='/teams')
 app.register_blueprint(tournaments.views.bp_tournaments, url_prefix='/tournaments')
@@ -34,6 +41,16 @@ login_manager.session_protection = 'strong'
 login_manager.login_view = 'users.login'
 
 data.db.init_app(app)
+
+# Set up file logging
+file_handler = logging.handlers.RotatingFileHandler(config.LOG_FILE, 'a', 5 * 1024 * 1024, 5)
+file_handler.setFormatter(logging.Formatter('%(asctime)s '
+                                            'Process=%(processName)s#%(process)d Thread=%(threadName)s#%(thread)d '
+                                            'Level=%(levelname)s "%(message)s" [in %(pathname)s:%(lineno)d]'))
+app.logger.setLevel(config.LOG_LEVEL)
+file_handler.setLevel(config.LOG_LEVEL)
+app.logger.addHandler(file_handler)
+app.logger.info('tourney startup')
 
 
 @login_manager.user_loader
