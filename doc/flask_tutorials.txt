@@ -1,3 +1,5 @@
 http://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world
 https://realpython.com/blog/python/python-web-applications-with-flask-part-i/
 https://github.com/mitsuhiko/flask/wiki/Large-app-how-to
+http://discoverflask.com
+http://flaskbook.com/
