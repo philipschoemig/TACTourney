@@ -1,0 +1,5 @@
+# Ignore the virtual env directory
+venv/
+
+# Ignore all compiled python files
+*.pyc
