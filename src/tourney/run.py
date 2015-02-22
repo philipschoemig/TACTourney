@@ -6,7 +6,7 @@ Created on 02.10.2014
 '''
 
 from __init__ import app
-import data
+from data import db
 
 
 if __name__ == '__main__':
@@ -14,5 +14,5 @@ if __name__ == '__main__':
     # it will use `current_app` instead.  Since we are not in an application
     # context right now, we will instead pass in the configured application
     # into our `create_all` call.
-    data.db.create_all(app=app)
+    db.create_all(app=app)
     app.run()

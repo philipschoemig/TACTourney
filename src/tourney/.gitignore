@@ -1,0 +1,2 @@
+# Ignore the instance directory because it has only local files
+instance/

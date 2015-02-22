@@ -8,10 +8,11 @@ Source: https://realpython.com/blog/python/python-web-applications-with-flask-pa
 
 import logging
 import logging.handlers
+import os
+import sys
 
 import flask
 import flask_bootstrap
-#import flask_ini
 import flask_login
 
 import config
@@ -23,11 +24,28 @@ import users.models
 import users.views
 
 
+APP_NAME = 'TACTourney'
+APP_VERSION = '1.0'
+
+DEFAULT_CONFIG_FILE = 'default.cfg'
+USER_CONFIG_FILE = 'user.cfg'
+SECRET_KEY_FILE = 'secret_key'
+
+BOOTSTRAP_USE_MINIFIED = True
+BOOTSTRAP_SERVE_LOCAL = True
+
+ADMIN_USERNAME = 'admin'
+
+
 app = flask.Flask(__name__)
-app.config.from_object('config')
-#app.iniconfig = flask_ini.FlaskIni()
-#app.iniconfig.readfp(open(config.DEFAULTS_CONFIG_FILE))
-#app.iniconfig.read(config.CONFIG_FILE)
+app.config.from_object(__name__)
+app.config['DEFAULT_CONFIG_PATH'] = os.path.join(app.root_path, DEFAULT_CONFIG_FILE)
+app.config['USER_CONFIG_PATH'] = os.path.join(app.instance_path, USER_CONFIG_FILE)
+app.config['SECRET_KEY_PATH'] = os.path.join(app.instance_path, SECRET_KEY_FILE)
+if os.path.isfile(app.config['SECRET_KEY_PATH']):
+    app.config['SECRET_KEY'] = open(app.config['SECRET_KEY_PATH'], 'rb').read()
+
+configurator = config.Configurator(app)
 
 app.register_blueprint(teams.views.bp_teams, url_prefix='/teams')
 app.register_blueprint(tournaments.views.bp_tournaments, url_prefix='/tournaments')
@@ -43,12 +61,12 @@ login_manager.login_view = 'users.login'
 data.db.init_app(app)
 
 # Set up file logging
-file_handler = logging.handlers.RotatingFileHandler(config.LOG_FILE, 'a', 5 * 1024 * 1024, 5)
+file_handler = logging.handlers.RotatingFileHandler(app.config['LOG_FILE'], 'a', 5 * 1024 * 1024, 5)
 file_handler.setFormatter(logging.Formatter('%(asctime)s '
-                                            'Process=%(processName)s#%(process)d Thread=%(threadName)s#%(thread)d '
+                                            'PID=%(process)d(%(processName)s) TID=%(thread)d(%(threadName)s) '
                                             'Level=%(levelname)s "%(message)s" [in %(pathname)s:%(lineno)d]'))
-app.logger.setLevel(config.LOG_LEVEL)
-file_handler.setLevel(config.LOG_LEVEL)
+app.logger.setLevel(app.config['LOG_LEVEL'])
+file_handler.setLevel(app.config['LOG_LEVEL'])
 app.logger.addHandler(file_handler)
 app.logger.info('tourney startup')
 
@@ -63,13 +81,3 @@ def index():
     if not flask_login.current_user.is_authenticated():
         return flask.redirect(flask.url_for('users.login'))
     return flask.redirect(flask.url_for('tournaments.table'))
-
-
-@app.before_first_request
-def setup():
-    # Set up default admin user
-    user = users.models.User.query.filter_by(username=config.ADMIN_USERNAME).first()
-    if user is None:
-        users.models.User.create(username=config.ADMIN_USERNAME,
-                                 password=config.ADMIN_PASSWORD,
-                                 role_enum=users.constants.Roles.admin)
