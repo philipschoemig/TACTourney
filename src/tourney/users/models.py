@@ -57,7 +57,7 @@ class User(db.Model, flask_login.UserMixin, utils.models.CRUDMixin):
         return self.role_enum == users.constants.Roles.admin
     
     def is_manager(self):
-        return self.role_enum == users.constants.Roles.manager
+        return self.role_enum == users.constants.Roles.manager or self.is_admin()
     
     def has_access(self, user):
         if user != self and not user.is_admin():
