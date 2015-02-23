@@ -10,7 +10,7 @@ import getpass
 import os
 import random
 
-from __init__ import app
+from __init__ import app, configurator
 from data import db
 import users.constants
 import users.models
@@ -46,20 +46,16 @@ def get_secret_key():
 @manager.command
 def setup():
     '''Setup the configuration for TACTourney'''
-    # Create instance directory
-    print "Creating instance directory..."
-    print "Instance path: " + app.instance_path
-    if not os.path.isdir(app.instance_path):
-        os.mkdir(app.instance_path)
-    print "Done"
-    print
-    
     # Create configuration file
     print "Creating configuration file..."
     user_config_path = app.config['USER_CONFIG_PATH']
     print "User config path: " + user_config_path
     if not os.path.exists(user_config_path):
-        # TODO
+        data = open(app.config['DEFAULT_CONFIG_PATH'], 'r').read()
+        open(app.config['USER_CONFIG_PATH'], 'w').write(data)
+        raw_input("Please adjust the configuration and then press [Enter] to continue")
+        print "Parsing configuration file..."
+        configurator.parse()
         print "Done"
     else:
         print "Error: File already exists"
@@ -89,7 +85,8 @@ def setup():
     user = users.models.User.query.filter_by(username=username).first()
     if user is None:
         password = getpass.getpass("Please enter the password for the admin user: ")
-        #var = raw_input("Please enter the password for the admin user: ")
+        while len(password) == 0:
+            password = getpass.getpass("Incorrect password entered. Please try again: ")
         users.models.User.create(username=username,
                                  password=password,
                                  role_enum=users.constants.Roles.admin)

@@ -42,6 +42,8 @@ app.config.from_object(__name__)
 app.config['DEFAULT_CONFIG_PATH'] = os.path.join(app.root_path, DEFAULT_CONFIG_FILE)
 app.config['USER_CONFIG_PATH'] = os.path.join(app.instance_path, USER_CONFIG_FILE)
 app.config['SECRET_KEY_PATH'] = os.path.join(app.instance_path, SECRET_KEY_FILE)
+if not os.path.isdir(app.instance_path):
+    os.mkdir(app.instance_path)
 if os.path.isfile(app.config['SECRET_KEY_PATH']):
     app.config['SECRET_KEY'] = open(app.config['SECRET_KEY_PATH'], 'rb').read()
 
