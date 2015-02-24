@@ -28,3 +28,20 @@ pip install -r requirements.txt
 ```
 deactivate
 ```
+
+## Configuration
+
+- Change into the project directory (where this README.md file is located)
+- Activate the virtual environment:
+```
+source .venv/bin/activate
+```
+- Change into the subdirectory src/tourney
+- Execute the manage.py script with argument setup and follow the instructions:
+```
+python manage.py setup
+```
+- Deactivate the virtual environment:
+```
+deactivate
+```
