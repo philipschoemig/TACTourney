@@ -24,6 +24,7 @@ source .venv/bin/activate
 ```
 pip install -r requirements.txt
 ```
+*If you get the error message "mysql_config not found" you need to install additional mysql tools. For Debian-based Linux distributions install the package libmysqlclient-dev.*
 - Deactivate the virtual environment:
 ```
 deactivate
