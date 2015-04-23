@@ -9,16 +9,34 @@ import utils.models
 
 
 class Team(db.Model, utils.models.UserAccessMixin, utils.models.CRUDMixin):
+
     '''
     classdocs
     '''
     id = db.Column(db.Integer, primary_key=True, info={'label': 'ID'})
-    name = db.Column(db.String(128), unique=False, info={'label': 'Name'})
+    name = db.Column(db.String(128), unique=True, info={'label': 'Name'})
 
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), info={'label': 'Owner', 'attr': 'user.username'})
+    user_id = db.Column(db.Integer,
+                        db.ForeignKey('user.id'),
+                        info={'label': 'Members', 'attr': 'users_string'})
     tournament_id = db.Column(db.Integer, db.ForeignKey('tournament.id'))
-    
-#     players = db.relationship('Player', backref='team', lazy='dynamic')
-    
+
+    @property
+    def users_string(self):
+        return ", ".join([user.username for user in self.users])
+
+    def has_access(self, user):
+        if not user.is_admin():
+            for u in self.users:
+                return u.has_access(user)
+        return True
+
+    @classmethod
+    def filter_user(cls, user):
+        query = cls.query
+        if not user.is_admin():
+            query = query.filter(cls.users.contains(user))
+        return query
+
     def __repr__(self):
         return '<Team %r>' % self.name

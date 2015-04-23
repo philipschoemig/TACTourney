@@ -36,9 +36,9 @@ def redirect_back(endpoint, **values):
     Redirects to the target from the 'next' URL parameter or the given default endpoint.
     """
     target = get_redirect_target()
-    print "Target: {}".format(target)
-    print "Request Referrer: {}".format(flask.request.referrer)
-    print "Request URL: {}".format(flask.request.url)
+    #print "Target: {}".format(target)
+    #print "Request Referrer: {}".format(flask.request.referrer)
+    #print "Request URL: {}".format(flask.request.url)
     if not target or target == flask.request.url:
         target = flask.url_for(endpoint, **values)
     return flask.redirect(target)

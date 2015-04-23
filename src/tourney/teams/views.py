@@ -32,7 +32,7 @@ def table():
 def add():
     form = teams.forms.TeamForm()
     if form.validate_on_submit():
-        teams.models.Team.create(form=form, user=flask_login.current_user)
+        teams.models.Team.create(form=form)
         alert_success('The team has been saved')
         return flask.redirect(flask.url_for('.table'))
     
@@ -49,6 +49,9 @@ def edit(team_id):
         return error_access_denied('Team ID {}'.format(team_id), 'index')
     
     form = teams.forms.TeamForm(flask.request.form, team)
+    # Set default of name field to check if changed (see custom validator
+    # function validate_name)
+    form.name.default = team.name
     if form.validate_on_submit():
         team.update(form=form)
         alert_success('The team has been saved')

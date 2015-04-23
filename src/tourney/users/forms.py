@@ -8,12 +8,15 @@ import flask_wtf
 import wtforms
 from wtforms.validators import Email, EqualTo, InputRequired, Length, Optional
 
+import teams.models
 import users.models
 
 
 class UserForm(flask_wtf.Form):
-    email = wtforms.StringField('Email address', validators=[InputRequired(), Email(), Length(0, 256)])
-    full_name = wtforms.StringField('Full name', validators=[Optional(), Length(0, 256)])
+    email = wtforms.StringField(
+        'Email address', validators=[InputRequired(), Email(), Length(0, 256)])
+    full_name = wtforms.StringField(
+        'Full name', validators=[Optional(), Length(0, 256)])
     password = wtforms.PasswordField('Password', validators=[EqualTo('password2',
                                                                      message='Passwords must match.')])
     password2 = wtforms.PasswordField('Confirm Password')
@@ -22,11 +25,13 @@ class UserForm(flask_wtf.Form):
 
 
 class RegisterForm(UserForm):
-    username = wtforms.StringField('Username', validators=[InputRequired(), Length(0, 64)])
+    username = wtforms.StringField(
+        'Username', validators=[InputRequired(), Length(0, 64)])
     password = wtforms.PasswordField('Password', validators=[InputRequired(),
                                                              EqualTo('password2',
                                                                      message='Passwords must match.')])
-    password2 = wtforms.PasswordField('Confirm Password', validators=[InputRequired()])
+    password2 = wtforms.PasswordField(
+        'Confirm Password', validators=[InputRequired()])
     role = None
     recaptcha = flask_wtf.RecaptchaField()
     submit = wtforms.SubmitField('Register')
@@ -37,6 +42,7 @@ class RegisterForm(UserForm):
 
 
 class LoginForm(flask_wtf.Form):
-    username = wtforms.StringField('Username', validators=[InputRequired(), Length(0, 64)])
+    username = wtforms.StringField(
+        'Username', validators=[InputRequired(), Length(0, 64)])
     password = wtforms.PasswordField('Password', validators=[InputRequired()])
     submit = wtforms.SubmitField('Log In')
