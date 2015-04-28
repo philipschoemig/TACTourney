@@ -26,10 +26,10 @@ class Team(db.Model, utils.models.UserAccessMixin, utils.models.CRUDMixin):
         return ", ".join([user.username for user in self.users])
 
     def has_access(self, user):
-        if not user.is_admin():
-            for u in self.users:
-                return u.has_access(user)
-        return True
+        for u in self.users:
+            if u.has_access(user):
+                return True
+        return False
 
     @classmethod
     def filter_user(cls, user):
