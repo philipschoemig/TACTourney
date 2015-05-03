@@ -17,6 +17,11 @@ team_user = db.Table('team_user',
                          'team_id', db.Integer, db.ForeignKey('team.id')),
                      db.Column('user_id', db.Integer, db.ForeignKey('user.id'))
                      )
+tournament_user = db.Table('tournament_user',
+                     db.Column(
+                         'tournament_id', db.Integer, db.ForeignKey('tournament.id')),
+                     db.Column('user_id', db.Integer, db.ForeignKey('user.id'))
+                     )
 
 
 class User(db.Model, flask_login.UserMixin, utils.models.CRUDMixin):
@@ -36,10 +41,14 @@ class User(db.Model, flask_login.UserMixin, utils.models.CRUDMixin):
                      default=users.constants.Roles.player.index,
                      info={'label': 'Role', 'attr': 'role_string'})
 
-    tournaments = db.relationship(
-        'tournaments.models.Tournament', backref='user', lazy='dynamic')
-    teams = db.relationship(
-        'teams.models.Team', secondary=team_user, backref='users', lazy='dynamic')
+    tournaments = db.relationship('tournaments.models.Tournament',
+                                  secondary=tournament_user,
+                                  backref='users',
+                                  lazy='dynamic')
+    teams = db.relationship('teams.models.Team',
+                            secondary=team_user,
+                            backref='users',
+                            lazy='dynamic')
 
     @property
     def password(self):

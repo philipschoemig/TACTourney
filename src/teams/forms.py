@@ -20,7 +20,7 @@ class TeamForm(flask_wtf.Form):
                                validators=[wtforms.validators.InputRequired(),
                                            wtforms.validators.Length(0, 128)])
     users = wtforms.ext.sqlalchemy.fields.QuerySelectMultipleField(
-        label='Members',
+        label='Players',
         query_factory=lambda: users.models.User.query,
         get_pk=lambda item: item.id,
         get_label=lambda item: item.username,
@@ -42,6 +42,6 @@ class TeamForm(flask_wtf.Form):
                     'Similar name already in use: ' + result[0])
 
     def validate_users(self, field):
-        # Check if the maximum number of team members is exceeded
+        # Check if the maximum number of team players is exceeded
         if len(field.data) > 2:
-            raise wtforms.ValidationError('A team may only have two members')
+            raise wtforms.ValidationError('A team may only have up to two players')

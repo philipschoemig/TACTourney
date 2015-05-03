@@ -32,7 +32,7 @@ def table():
 def add():
     form = tournaments.forms.TournamentForm()
     if form.validate_on_submit():
-        tournaments.models.Tournament.create(form=form, user=flask_login.current_user)
+        tournaments.models.Tournament.create(form=form)
         alert_success('The tournament has been saved')
         return flask.redirect(flask.url_for('.table'))
     

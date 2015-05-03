@@ -19,10 +19,14 @@ class Tournament(db.Model, utils.models.UserAccessMixin, utils.models.CRUDMixin)
 
     user_id = db.Column(db.Integer,
                         db.ForeignKey('user.id'),
-                        info={'label': 'Owner', 'attr': 'user.username'})
+                        info={'label': 'Organizers', 'attr': 'users_string'})
 
     teams = db.relationship(
         'teams.models.Team', backref='tournament', lazy='dynamic')
+
+    @property
+    def users_string(self):
+        return ", ".join([user.username for user in self.users])
 
     def __repr__(self):
         return '<Tournament %r>' % self.name

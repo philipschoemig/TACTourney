@@ -50,11 +50,14 @@ class CRUDMixin(object):
 
 class UserAccessMixin(object):
     def has_access(self, user):
-        return self.user.has_access(user)
+        for u in self.users:
+            if u.has_access(user):
+                return True
+        return False
 
     @classmethod
     def filter_user(cls, user):
         query = cls.query
         if not user.is_admin():
-            query = query.filter_by(user=user)
+            query = query.filter(cls.users.contains(user))
         return query
