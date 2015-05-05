@@ -1,15 +1,19 @@
 TACTourney
 =========
 
-A tournament management software for the board game [TAC](http://www.spiel-tac.de). It is based on the lightweight web application framework [Flask](http://flask.pocoo.org/) for Python.
+A tournament management software for the board game [TAC](http://www.spieltac.de). It is based on the lightweight web application framework [Flask](http://flask.pocoo.org/) for Python.
 
-## Installation
+## Prerequisites
 
-- Install [Python](https://www.python.org/) and [pip](https://pip.pypa.io/)
-- Install [Virtualenv](https://virtualenv.pypa.io/):
+- Install [Python](https://www.python.org/)
+- Install [pip](https://pip.pypa.io/)
+- Install [Virtualenv](https://virtualenv.pypa.io/) with pip:
 ```
 pip install virtualenv
 ```
+
+## Installation
+
 - Retrieve the source code from GitHub
 - Change into the project directory (where this README.md file is located)
 - Create a virtual environment for Python:
