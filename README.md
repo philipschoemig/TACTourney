@@ -50,3 +50,12 @@ python manage.py setup
 ```
 deactivate
 ```
+
+## Links
+
+- [Code Climate](https://codeclimate.com/github/philipschoemig/TACTourney)
+- [Pivotal Tracker](https://www.pivotaltracker.com/projects/1339060)
+
+## Status
+
+[![Code Climate](https://codeclimate.com/github/philipschoemig/TACTourney/badges/gpa.svg)](https://codeclimate.com/github/philipschoemig/TACTourney)
