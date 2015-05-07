@@ -55,8 +55,23 @@ def table():
     models = users.models.User.query.all()
     columns = get_column_names(users.models.User())
     table = create_table(models, {'Edit': '.edit', 'Delete': '.delete'}, user_id='id')
-    actions = None #create_action_urls({'Add': '.add'})
+    actions = create_action_urls({'Add': '.add'})
     return flask.render_template('table_page.html', type="Users", columns=columns, table=table, actions=actions)
+
+
+@bp_users.route('/add', methods=['GET', 'POST'])
+@flask_login.login_required
+def add():
+    if not flask_login.current_user.is_admin():
+        return error_access_denied('Users', 'index')
+    form = users.forms.UserForm()
+    form.role.choices = [(role.index, str(role).capitalize()) for role in users.constants.Roles]
+    if form.validate_on_submit():
+        users.models.User.create(form=form)
+        alert_success('The user has been saved')
+        return flask.redirect(flask.url_for('.table'))
+    
+    return flask.render_template('add_page.html', type="User", form=form)
 
 
 @bp_users.route('/edit/<int:user_id>', methods=['GET', 'POST'])
@@ -69,6 +84,9 @@ def edit(user_id):
         return error_access_denied('User ID {}'.format(user_id), 'index')
     
     form = users.forms.UserForm(flask.request.form, user)
+    # Set default of username field to check if changed (see custom validator
+    # function validate_username)
+    form.username.default = user.username
     if flask_login.current_user.is_admin():
         form.role.choices = [(role.index, str(role).capitalize()) for role in users.constants.Roles]
     else:
