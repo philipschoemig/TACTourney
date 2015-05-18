@@ -12,11 +12,9 @@ languages:
 # - lib/**/*.rb # Recursively ignore all files ending in .rb
 
 # Exclude python files from flask migrations because these are auto-generated sources
-src/migrations/versions/*.py
-
 # Exclude javascript files from bootbox because these are 3rd party sources
-src/static/js/bootbox*.js
-
 # Exclude javascript files from jquery because these are 3rd party sources
-src/static/js/jquery*.js
-
+exclude_paths:
+- src/migrations/versions/*.py
+- src/static/js/bootbox*.js
+- src/static/js/jquery*.js
