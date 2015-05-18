@@ -25,7 +25,6 @@ def login():
         if user is not None and user.verify_password(form.password.data):
             flask_login.login_user(user, True)
             return utils.redirect.redirect_back('index')
-            #return flask.redirect(flask.url_for('index'))
         alert_warning('Invalid username or password')
     return flask.render_template('login.html', form=form)
 
@@ -56,7 +55,7 @@ def table():
     columns = get_column_names(users.models.User())
     table = create_table(models, {'Edit': '.edit', 'Delete': '.delete'}, user_id='id')
     actions = create_action_urls({'Add': '.add'})
-    return flask.render_template('table_page.html', type="Users", columns=columns, table=table, actions=actions)
+    return flask.render_template('table_page.html', title="Users", columns=columns, table=table, actions=actions)
 
 
 @bp_users.route('/add', methods=['GET', 'POST'])

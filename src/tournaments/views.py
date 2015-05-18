@@ -20,11 +20,9 @@ bp_tournaments = flask.Blueprint("tournaments", __name__)
 @bp_tournaments.route('/table')
 @flask_login.login_required
 def table():
-    models = tournaments.models.Tournament.filter_user(flask_login.current_user).all()
-    columns = get_column_names(tournaments.models.Tournament())
-    table = create_table(models, {'Edit': '.edit', 'Delete': '.delete'}, tournament_id='id')
-    actions = create_action_urls({'Add': '.add'})
-    return flask.render_template('table_page.html', type="Tournaments", columns=columns, table=table, actions=actions)
+    return utils.views.view_table(tournaments.models.Tournament,
+                                  "Tournaments",
+                                  tournament_id='id')
 
 
 @bp_tournaments.route('/add', methods=['GET', 'POST'])

@@ -20,11 +20,9 @@ bp_teams = flask.Blueprint("teams", __name__)
 @bp_teams.route('/table')
 @flask_login.login_required
 def table():
-    models = teams.models.Team.filter_user(flask_login.current_user).all()
-    columns = get_column_names(teams.models.Team())
-    table = create_table(models, {'Edit': '.edit', 'Delete': '.delete'}, team_id='id')
-    actions = create_action_urls({'Add': '.add'})
-    return flask.render_template('table_page.html', type="Teams", columns=columns, table=table, actions=actions)
+    return utils.views.view_table(teams.models.Team,
+                                  "Teams",
+                                  team_id='id')
 
 
 @bp_teams.route('/add', methods=['GET', 'POST'])

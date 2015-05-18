@@ -5,8 +5,25 @@ Created on 22.10.2014
 '''
 
 import flask
+import flask_login
 
 import utils.redirect
+
+
+def view_table(cls, title, **url_args):
+    """
+    View function to display a table for the given model class.
+    """
+    models = cls.filter_user(flask_login.current_user).all()
+    columns = get_column_names(cls())
+    table = create_table(
+        models, {'Edit': '.edit', 'Delete': '.delete'}, **url_args)
+    actions = create_action_urls({'Add': '.add'})
+    return flask.render_template('table_page.html',
+                                 title=title,
+                                 columns=columns,
+                                 table=table,
+                                 actions=actions)
 
 
 def get_column_names(model):
@@ -90,19 +107,23 @@ def alert_danger(message):
     flask.flash(message, 'danger')
 
 
+def error(message, redirect):
+    """
+    Shows an error message.
+    """
+    alert_danger(message)
+    return utils.redirect.redirect_back(redirect)
+
+
 def error_not_found(message, redirect):
     """
     Shows an error message that a page couldn't be found.
     """
-    alert_danger('Not found: {}'.format(message))
-    return utils.redirect.redirect_back(redirect)
-    #return flask.redirect(redirect)
+    return error('Not found: {}'.format(message), redirect)
 
 
 def error_access_denied(message, redirect):
     """
     Shows an error message that a page couldn't be accessed.
     """
-    alert_danger('Access denied: {}'.format(message))
-    return utils.redirect.redirect_back(redirect)
-    #return flask.redirect(redirect)
+    return error('Access denied: {}'.format(message), redirect)
