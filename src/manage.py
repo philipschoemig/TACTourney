@@ -10,7 +10,7 @@ import getpass
 import os
 import random
 
-from __init__ import app, configurator
+from app import app, configurator
 from data import db
 import users.constants
 import users.models
