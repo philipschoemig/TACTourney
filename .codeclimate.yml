@@ -13,8 +13,10 @@ languages:
 
 # Exclude python files from flask migrations because these are auto-generated sources
 # Exclude javascript files from bootbox because these are 3rd party sources
+# Exclude javascript files from bootstrap because these are 3rd party sources
 # Exclude javascript files from jquery because these are 3rd party sources
 exclude_paths:
 - src/migrations/versions/*.py
 - src/static/js/bootbox*.js
+- src/static/js/bootstrap*.js
 - src/static/js/jquery*.js
