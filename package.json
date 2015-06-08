@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/philipschoemig/TACTourney.git"
+    "url": "git://github.com/philipschoemig/TACTourney.git"
   }
 }
 
