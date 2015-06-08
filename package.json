@@ -1,0 +1,15 @@
+{
+  "name": "tactourney",
+  "version": "0.1.0-alpha",
+  "description": "A tournament management software for the board game TAC (spiel-tac.de).",
+  "homepage": "https://github.com/philipschoemig/TACTourney",
+  "bugs": "https://github.com/philipschoemig/TACTourney/issues",
+  "author": {
+    "name": "Philip Schömig"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/philipschoemig/TACTourney.git"
+  }
+}
+
