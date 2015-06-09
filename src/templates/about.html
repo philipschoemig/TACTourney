@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title_prefix %}About{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>About</h1>
+</div>
+<div class="col-xs-8">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Author</h3>
+        </div>
+        <div class="panel-body">
+            <dl>
+              <dt>Full name</dt>
+              <dd>Philip Schömig</dd>
+
+              <dt>E-Mail</dt>
+              <dd><a href="http://www.google.com/recaptcha/mailhide/d?k=01ciEon6qhPUtHkA2796MjHQ==&amp;c=jD4mtpRmqwZSo8hUI46wSDp76LfYx8gh-O7hmUhK40I=" onclick="window.open('http://www.google.com/recaptcha/mailhide/d?k\07501ciEon6qhPUtHkA2796MjHQ\75\75\46c\75jD4mtpRmqwZSo8hUI46wSDp76LfYx8gh-O7hmUhK40I\075', '', 'toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0,width=500,height=300'); return false;" title="Reveal this e-mail address">t...@spieltac.de</a></dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Project</h3>
+        </div>
+        <div class="panel-body">
+            <dl>
+              <dt>Name</dt>
+              <dd>{{ config.PROJECT_NAME }}</dd>
+
+              <dt>Version</dt>
+              <dd>{{ config.PROJECT_VERSION }}</dd>
+
+              <dt>Website</dt>
+              <dd><a href="{{ config.PROJECT_URL }}">{{ config.PROJECT_URL }}</a></dd>
+            </dl>
+        </div>
+    </div>
+</div>
+{% endblock page_content %}

@@ -2,24 +2,30 @@
 
 {% import 'macros/view.html' as view %}
 
-{% block title %}{% block title_prefix %}{% endblock %} - TACTourney{% endblock %}
+{% block html_attribs %} lang="en"{% endblock %}
+
+{% block head %}
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    {{ super() }}
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}"/>
+{% endblock head %}
+
+{% block title %}
+    {% block title_prefix %}{% endblock title_prefix %} - {{ config.APP_NAME }}
+{% endblock title %}
 
 {%- block styles %}
     <!-- Bootstrap -->
-    <link href="{{bootstrap_find_resource('css/bootstrap.css', cdn='bootstrap')}}" rel="stylesheet" media="screen">
-    <link href="{{bootstrap_find_resource('css/bootstrap-theme.css', cdn='bootstrap-theme')}}" rel="stylesheet" media="screen">
+    <link href="{{bootstrap_find_resource('css/bootstrap.css', cdn='bootstrap')}}" rel="stylesheet" media="screen"/>
+    <!-- Bootstrap Theme -->
+    <link href="{{bootstrap_find_resource('css/bootstrap-theme.css', cdn='bootstrap-theme')}}" rel="stylesheet" media="screen"/>
 {%- endblock styles %}
 
-{% block head %}
-    {{ super() }}
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-{% endblock %}
-
 {% block navbar %}
-<div class="navbar navbar-default navbar-static-top" role="navigation">
+<nav class="navbar navbar-default navbar-static-top" role="navigation">
     <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand" href="{{ url_for('index') }}">TACTourney</a>
+            <a class="navbar-brand" href="{{ url_for('index') }}">{{ config.APP_NAME }}</a>
         </div>
         <div class="navbar-collapse collapse">
             {% if current_user.is_authenticated() %}
@@ -33,17 +39,21 @@
             {% endif %}
             <ul class="nav navbar-nav navbar-right">
                 {% if current_user.is_authenticated() %}
-                    <li><a href="{{ url_for('users.edit', user_id=current_user.id) }}">Account</a></li>
-                    <li><a href="{{ url_for('users.logout') }}">Log Out</a></li>
+                    {{ view.navbar_item_inactive('Account', 'users.edit', user_id=current_user.id) }}
+                    {{ view.navbar_item_inactive('Log Out', 'users.logout') }}
                 {% else %}
-                    <li><a href="{{ url_for('users.login') }}">Log In</a></li>
-                    <li><a href="{{ url_for('users.register') }}">Register</a></li>
+                    {{ view.navbar_item_inactive('Log In', 'users.login') }}
+                    {{ view.navbar_item_inactive('Register', 'users.register') }}
                 {% endif %}
+
+                {{ view.navbar_dropdown_menu_begin('Help') }}
+                {{ view.navbar_item('About', 'about') }}
+                {{ view.navbar_dropdown_menu_end() }}
             </ul>
         </div>
     </div>
-</div>
-{% endblock %}
+</nav>
+{% endblock navbar %}
 
 {% block content %}
 <div class="container">
@@ -56,4 +66,4 @@
 
     {% block page_content %}{% endblock %}
 </div>
-{% endblock %}
+{% endblock content %}

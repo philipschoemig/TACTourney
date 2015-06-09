@@ -21,8 +21,11 @@ import users.models
 import users.views
 
 
+PROJECT_NAME = 'TACTourney'
+PROJECT_VERSION = 'v0.1.0-alpha'
+PROJECT_URL = 'https://github.com/philipschoemig/TACTourney'
+
 APP_NAME = 'TACTourney'
-APP_VERSION = '1.0'
 
 DEFAULT_CONFIG_FILE = 'default.cfg'
 USER_CONFIG_FILE = 'user.cfg'
@@ -89,3 +92,8 @@ def index():
     if not flask_login.current_user.is_authenticated():
         return flask.redirect(flask.url_for('users.login'))
     return flask.redirect(flask.url_for('tournaments.table'))
+
+
+@app.route('/about')
+def about():
+    return flask.render_template('about.html')
