@@ -24,6 +24,7 @@ def login():
         user = users.models.User.query.filter_by(username=form.username.data).first()
         if user is not None and user.verify_password(form.password.data):
             flask_login.login_user(user, True)
+            alert_info('You have been logged in')
             return utils.redirect.redirect_back('index')
         alert_warning('Invalid username or password')
     return flask.render_template('login.html', form=form)

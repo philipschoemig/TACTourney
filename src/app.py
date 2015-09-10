@@ -88,9 +88,8 @@ def load_user(user_id):
 
 
 @app.route('/')
+@flask_login.login_required
 def index():
-    if not flask_login.current_user.is_authenticated():
-        return flask.redirect(flask.url_for('users.login'))
     return flask.redirect(flask.url_for('tournaments.table'))
 
 
