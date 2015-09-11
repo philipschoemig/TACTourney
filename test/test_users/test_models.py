@@ -17,6 +17,7 @@ class TestModels(unittest.TestCase):
     def setUp(self):
         app.config['TESTING'] = True
         app.config['WTF_CSRF_ENABLED'] = False
+        app.config['SECRET_KEY'] = 'secret_key'
         app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
         self.client = app.test_client()
         with app.app_context():
@@ -80,6 +81,16 @@ class TestModels(unittest.TestCase):
         with self.client.session_transaction():
             user = users.models.User.query.filter_by(username='admin').first()
             self.assertTrue(user.is_manager)
+
+    def test_is_readable(self):
+        with self.client.session_transaction():
+            user = users.models.User.query.filter_by(username='admin').first()
+            self.assertTrue(user.is_readable)
+
+    def test_is_writeable(self):
+        with self.client.session_transaction():
+            user = users.models.User.query.filter_by(username='admin').first()
+            self.assertTrue(user.is_writeable)
 
     def test_has_access(self):
         with self.client.session_transaction():

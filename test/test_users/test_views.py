@@ -15,6 +15,7 @@ class TestViews(unittest.TestCase):
     def setUp(self):
         app.config['TESTING'] = True
         app.config['WTF_CSRF_ENABLED'] = False
+        app.config['SECRET_KEY'] = 'secret_key'
         app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
         self.client = app.test_client()
         with app.app_context():
