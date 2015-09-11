@@ -17,5 +17,5 @@ if __name__ == "__main__":
     sys.path.append(srcdir)
 
     # Execute pytest
-    args = [ testdir ]
+    args = [ '--cov', srcdir, testdir ]
     sys.exit(pytest.main(args))
