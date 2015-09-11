@@ -55,9 +55,11 @@ deactivate
 
 - [Code Climate](https://codeclimate.com/github/philipschoemig/TACTourney)
 - [Travis CI](https://travis-ci.org/philipschoemig/TACTourney)
+- [Coveralls](https://coveralls.io/github/philipschoemig/TACTourney)
 - [Pivotal Tracker](https://www.pivotaltracker.com/projects/1339060)
 
 ## Status
 
 [![Code Climate](https://codeclimate.com/github/philipschoemig/TACTourney/badges/gpa.svg)](https://codeclimate.com/github/philipschoemig/TACTourney)
 [![Build Status](https://travis-ci.org/philipschoemig/TACTourney.svg)](https://travis-ci.org/philipschoemig/TACTourney)
+[![Coverage Status](https://coveralls.io/repos/philipschoemig/TACTourney/badge.svg?service=github)](https://coveralls.io/github/philipschoemig/TACTourney)
