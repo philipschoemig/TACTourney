@@ -82,6 +82,16 @@ class TestModels(unittest.TestCase):
             user = users.models.User.query.filter_by(username='admin').first()
             self.assertTrue(user.is_manager)
 
+    def test_is_readable(self):
+        with self.client.session_transaction():
+            user = users.models.User.query.filter_by(username='admin').first()
+            self.assertTrue(user.is_readable)
+
+    def test_is_writeable(self):
+        with self.client.session_transaction():
+            user = users.models.User.query.filter_by(username='admin').first()
+            self.assertTrue(user.is_writeable)
+
     def test_has_access(self):
         with self.client.session_transaction():
             user = users.models.User.query.filter_by(username='admin').first()
@@ -91,3 +101,7 @@ class TestModels(unittest.TestCase):
         with self.client.session_transaction():
             user = users.models.User.query.filter_by(username='admin').first()
             self.assertEqual("<User u'admin'>", str(user))
+
+
+if __name__ == '__main__':
+    unittest.main()

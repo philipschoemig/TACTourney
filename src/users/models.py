@@ -81,6 +81,14 @@ class User(db.Model, flask_login.UserMixin, utils.models.CRUDMixin):
     def is_manager(self):
         return self.role_enum == users.constants.Roles.manager or self.is_admin()
 
+    def is_readable(self, user):
+        return True
+
+    def is_writeable(self, user):
+        if user != self and not user.is_admin():
+            return False
+        return True
+
     def has_access(self, user):
         if user != self and not user.is_admin():
             return False

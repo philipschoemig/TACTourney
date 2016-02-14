@@ -63,3 +63,71 @@ class TestViews(unittest.TestCase):
     def test_register(self):
         rv = self.register('user', 'user@test.com', 'default')
         self.assertIn('Your account has been created', rv.data)
+
+    def test_table(self):
+        self.login('admin', 'default')
+        rv = self.client.get('/users/table')
+        self.assertIn('admin', rv.data)
+
+    def test_add(self):
+        self.login('admin', 'default')
+        rv = self.client.post('/users/add', data=dict(
+            username='user',
+            email='user@test.com',
+            full_name='Test user',
+            password='default',
+            password2='default',
+            role=0
+        ), follow_redirects=True)
+        self.assertIn('The user has been saved', rv.data)
+
+    def test_edit(self):
+        self.login('admin', 'default')
+        rv = self.client.get('/users/edit/2', follow_redirects=True)
+        self.assertIn('Not found: User ID 2', rv.data)
+
+        rv = self.client.post('/users/add', data=dict(
+            username='user',
+            email='user@test.com',
+            full_name='Test user',
+            password='default',
+            password2='default',
+            role=0
+        ), follow_redirects=True)
+
+        rv = self.client.post('/users/edit/2', data=dict(
+            username='user',
+            email='user@mytest.com',
+            full_name='Test user',
+            password='default',
+            password2='default',
+            role=0
+        ), follow_redirects=True)
+        self.assertIn('The user has been saved', rv.data)
+        self.assertIn('user@mytest.com', rv.data)
+
+    def test_delete(self):
+        self.login('admin', 'default')
+        rv = self.client.get('/users/delete/2', follow_redirects=True)
+        self.assertIn('Not found: User ID 2', rv.data)
+
+        rv = self.client.post('/users/add', data=dict(
+            username='user',
+            email='user@test.com',
+            full_name='Test user',
+            password='default',
+            password2='default',
+            role=0
+        ), follow_redirects=True)
+
+        rv = self.client.get('/users/delete/2', follow_redirects=True)
+        self.assertIn('Do you really want to delete this user?', rv.data)
+
+        # rv = self.client.post('/users/delete/2', data=dict(
+        #     radio='radio-0'
+        # ), follow_redirects=True)
+        # self.assertIn('Do you really want to delete this user?t', rv.data)
+
+
+if __name__ == '__main__':
+    unittest.main()

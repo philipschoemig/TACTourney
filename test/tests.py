@@ -16,6 +16,12 @@ if __name__ == "__main__":
     # Append source directory to search path
     sys.path.append(srcdir)
 
-    # Execute pytest
-    args = [ '--cov', srcdir, testdir ]
+    # Setup pytest arguments
+    args = ['--cov', srcdir]
+    if '--pep8' in sys.argv:
+        args.append('--pep8')
+        args.append(srcdir)
+
+    # Execute pytest on the test directory
+    args.append(testdir)
     sys.exit(pytest.main(args))
